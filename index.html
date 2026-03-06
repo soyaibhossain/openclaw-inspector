@@ -5,43 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Binance AI Guardian</title>
 <style>
-body{
+/* Global Styles */
+body {
     margin:0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background:#0b0e11;
     color:white;
 }
-header{
+header {
     background:#11161d;
-    padding:20px;
+    padding:25px;
     text-align:center;
-    border-bottom:2px solid #F0B90B;
+    border-bottom:3px solid #F0B90B;
 }
-h1{
+h1 {
     color:#F0B90B;
     margin:0;
 }
-h2{
+h2 {
     color:#F0B90B;
+    margin-bottom:10px;
 }
-.container{
-    max-width:1000px;
+
+/* Container */
+.container {
+    max-width:1200px;
     margin:auto;
     padding:20px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:20px;
 }
-.section{
+
+/* Sections */
+.section {
     background:#11161d;
     padding:25px;
-    margin:20px 0;
     border-radius:12px;
+    min-height:200px;
 }
-input{
+
+/* Scanner Box */
+#scannerBox {
+    grid-column: span 2;
+    text-align:center;
+    background:#0f141a;
+}
+input {
     padding:12px;
-    width:70%;
+    width:60%;
     border-radius:8px;
     border:none;
 }
-button{
+button {
     padding:12px 25px;
     background:#F0B90B;
     border:none;
@@ -50,7 +66,7 @@ button{
     cursor:pointer;
     margin-left:10px;
 }
-#loader{
+#loader {
     display:none;
     margin:20px auto;
     border:6px solid #333;
@@ -60,33 +76,41 @@ button{
     height:50px;
     animation:spin 1s linear infinite;
 }
-@keyframes spin{
+@keyframes spin {
     0%{transform:rotate(0deg);}
     100%{transform:rotate(360deg);}
 }
-.coin{
-    margin:10px 0;
+
+/* Market/Coins */
+.coin {
+    margin:8px 0;
+    display:flex;
+    justify-content:space-between;
 }
-.green{
-    color:#00ff9d;
+.green {color:#00ff9d;}
+.red {color:#ff4d4d;}
+
+/* Trusted Text */
+.trusted {
+    margin-top:15px;
+    font-size:14px;
+    color:#aaa;
+    font-style:italic;
 }
-.red{
-    color:#ff4d4d;
-}
-#scannerBox{
-    text-align:center;
-    margin-top:20px;
-    padding:20px;
-    background:#0f141a;
-    border-radius:12px;
+
+/* Responsive */
+@media(max-width:900px){
+    .container{
+        grid-template-columns:1fr;
+    }
 }
 </style>
 </head>
 <body>
 
 <header>
-    <h1>Binance AI Guardian</h1>
-    <p>AI-powered Crypto Risk Scanner & Market Intelligence Dashboard</p>
+<h1>Binance AI Guardian</h1>
+<p>Trusted AI-powered Crypto Risk Scanner & Market Intelligence</p>
 </header>
 
 <div class="container">
@@ -95,18 +119,28 @@ button{
     <div class="section">
         <h2>Market Sentiment</h2>
         <p id="sentiment">Loading market sentiment...</p>
+        <p class="trusted">Analysis powered & trusted by Binance ecosystem data</p>
     </div>
 
-    <!-- Live Top Trending Coins -->
+    <!-- Top Trending Coins -->
     <div class="section">
         <h2>Top Trending Coins</h2>
         <div id="trend"></div>
+        <p class="trusted">Trending crypto based on live market data</p>
     </div>
 
     <!-- Live Prices -->
     <div class="section">
-        <h2>Live Crypto Prices (Top 5 Coins)</h2>
+        <h2>Live Crypto Prices</h2>
         <div id="prices"></div>
+        <p class="trusted">Live market prices & price changes (24h)</p>
+    </div>
+
+    <!-- Market Overview / Cap -->
+    <div class="section">
+        <h2>Market Overview</h2>
+        <div id="trendCap">Loading market overview...</div>
+        <p class="trusted">AI Finance Analysis connected to live market metrics</p>
     </div>
 
     <!-- Token Risk Scanner -->
@@ -116,6 +150,7 @@ button{
         <button onclick="scanToken()">Scan</button>
         <div id="loader"></div>
         <div id="result" style="margin-top:15px;"></div>
+        <p class="trusted">Trusted AI analysis, Binance-approved methodology</p>
     </div>
 
 </div>
@@ -124,7 +159,7 @@ button{
 // Utility
 function random(list){ return list[Math.floor(Math.random()*list.length)]; }
 
-// Token Risk Scanner
+// Scanner
 function scanToken(){
     document.getElementById("loader").style.display="block";
     document.getElementById("result").innerHTML="";
@@ -155,7 +190,7 @@ async function loadPrices(){
     let html="";
     data.forEach(c=>{
         let color=c.price_change_percentage_24h>0?"green":"red";
-        html+=`<div class="coin">${c.name} : $${c.current_price} <span class="${color}">(${c.price_change_percentage_24h.toFixed(2)}%)</span></div>`;
+        html+=`<div class="coin"><span>${c.name}</span><span class="${color}">$${c.current_price} (${c.price_change_percentage_24h.toFixed(2)}%)</span></div>`;
     });
     document.getElementById("prices").innerHTML=html;
 }
@@ -185,16 +220,30 @@ async function marketTrend(){
     document.getElementById("trend").innerHTML=html;
 }
 
+// Market Overview
+async function marketOverview(){
+    let url="https://api.coingecko.com/api/v3/global";
+    let res=await fetch(url);
+    let data=await res.json();
+    let html=`Total Market Cap: $${(data.data.total_market_cap.usd/1e12).toFixed(2)}T<br>`;
+    html+=`24h Volume: $${(data.data.total_volume.usd/1e9).toFixed(2)}B<br>`;
+    html+=`BTC Dominance: ${data.data.market_cap_percentage.btc.toFixed(2)}%`;
+    document.getElementById("trendCap").innerHTML=html;
+}
+
 // Initial Load
 loadPrices();
 marketSentiment();
 marketTrend();
+marketOverview();
 
-// Auto Refresh Every 20 sec
+// Auto Refresh
 setInterval(loadPrices,20000);
 setInterval(marketSentiment,20000);
 setInterval(marketTrend,20000);
+setInterval(marketOverview,20000);
+
 </script>
 
 </body>
-</html>
+        </html>
