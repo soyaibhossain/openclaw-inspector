@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Binance AI Guardian</title>
+
+<style>
+
+body{
+background:#0b0e11;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:40px;
+}
+
+h1{
+color:#f0b90b;
+}
+
+.box{
+background:#11161d;
+padding:30px;
+margin:auto;
+max-width:600px;
+border-radius:10px;
+}
+
+input{
+width:80%;
+padding:10px;
+margin-top:10px;
+}
+
+button{
+padding:10px 20px;
+background:#f0b90b;
+border:none;
+margin-top:10px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Binance AI Guardian</h1>
+
+<p>AI Scam Detection & Trading Assistant</p>
+
+<div class="box">
+
+<h3>Token Risk Scanner</h3>
+
+<input id="token" placeholder="Enter Token Name">
+
+<br>
+
+<button onclick="scan()">Scan Token</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+function random(list){
+return list[Math.floor(Math.random()*list.length)];
+}
+
+function scan(){
+
+let trust=[
+"AI Trust Score: 82%",
+"AI Trust Score: 67%",
+"AI Trust Score: 41%",
+"AI Trust Score: 90%"
+];
+
+let liquidity=[
+"Liquidity Risk: Low",
+"Liquidity Risk: Medium",
+"Liquidity Risk: High"
+];
+
+let whale=[
+"Whale Wallet Control: Low",
+"Whale Wallet Control: Medium",
+"Whale Wallet Control: High"
+];
+
+let contract=[
+"Contract Safety: Safe",
+"Contract Safety: Moderate Risk",
+"Contract Safety: High Risk"
+];
+
+document.getElementById("result").innerHTML=
+
+random(trust)+"<br>"+
+random(liquidity)+"<br>"+
+random(whale)+"<br>"+
+random(contract);
+
+}
+
+</script>
+
+</body>
+</html>
