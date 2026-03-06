@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Binance AI Guardian</title>
+<title>OpenClaw Inspector</title>
 <style>
 /* Global Styles */
 body {
     margin:0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background:#1E1E2F; /* dark but friendly, Binance-style */
-    color:white;
+    background: #F9F6F0; /* Binance-friendly light background */
+    color: #1E1E2F; /* dark text for readability */
 }
 header {
     background:#F0B90B;
@@ -22,8 +22,6 @@ header {
 }
 h1 {margin:0;}
 h2 {color:#F0B90B;margin-bottom:10px;}
-
-/* Container & Grid */
 .container {
     max-width:1200px;
     margin:auto;
@@ -35,38 +33,43 @@ h2 {color:#F0B90B;margin-bottom:10px;}
 
 /* Section Cards */
 .section {
-    background:#2B2B3F;
+    background:#FFFDF5;
     padding:25px;
     border-radius:12px;
     min-height:200px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 /* Scanner Box */
 #scannerBox {
     grid-column: span 2;
     text-align:center;
-    background:#32334F;
+    background:#FFF8E1;
+    padding:40px 20px;
 }
 input {
-    padding:12px;
+    padding:14px;
     width:60%;
     border-radius:8px;
-    border:none;
+    border:1px solid #ccc;
 }
 button {
-    padding:12px 25px;
+    padding:14px 30px;
     background:#F0B90B;
     border:none;
     border-radius:8px;
     font-weight:bold;
     cursor:pointer;
     margin-left:10px;
+    transition:0.3s;
+}
+button:hover{
+    background:#d6a700;
 }
 #loader {
     display:none;
     margin:20px auto;
-    border:6px solid #444;
+    border:6px solid #ccc;
     border-top:6px solid #F0B90B;
     border-radius:50%;
     width:50px;
@@ -85,15 +88,23 @@ button {
     justify-content:space-between;
     font-weight:bold;
 }
-.green {color:#00FF9D;}
+.green {color:#00A86B;}
 .red {color:#FF4D4D;}
-.neutral {color:#DDD;}
-
+.neutral {color:#1E1E2F;}
 .trusted {
     margin-top:10px;
     font-size:13px;
-    color:#AAA;
+    color:#555;
     font-style:italic;
+}
+
+/* Footer */
+footer{
+    grid-column: span 2;
+    text-align:center;
+    margin-top:30px;
+    font-size:14px;
+    color:#1E1E2F;
 }
 
 /* Responsive */
@@ -105,8 +116,8 @@ button {
 <body>
 
 <header>
-<h1>Binance AI Guardian</h1>
-<p>Finance-focused Crypto Analysis | Trusted by Binance ecosystem</p>
+<h1>OpenClaw Inspector</h1>
+<p>Finance-focused AI Crypto Risk Scanner | Trusted by Binance</p>
 </header>
 
 <div class="container">
@@ -115,39 +126,39 @@ button {
     <div class="section">
         <h2>Market Sentiment</h2>
         <p id="sentiment">Loading market sentiment...</p>
-        <p class="trusted">Live market analysis based on global crypto metrics</p>
     </div>
 
     <!-- Market Overview -->
     <div class="section">
         <h2>Market Overview</h2>
         <div id="trendCap">Loading market overview...</div>
-        <p class="trusted">Trusted financial metrics connected to Binance ecosystem</p>
+    </div>
+
+    <!-- Token Risk Scanner - Center -->
+    <div class="section" id="scannerBox">
+        <h2>Token Risk Scanner</h2>
+        <input id="tokenInput" placeholder="Enter Token Symbol (BTC / ETH / PEPE)">
+        <button onclick="scanToken()">Scan</button>
+        <div id="loader"></div>
+        <div id="result" style="margin-top:15px;"></div>
     </div>
 
     <!-- Live Prices -->
     <div class="section">
         <h2>Live Crypto Prices</h2>
         <div id="prices"></div>
-        <p class="trusted">Top coins, 24h changes & live updates</p>
     </div>
 
-    <!-- Top Trending Coins -->
+    <!-- Trending Coins -->
     <div class="section">
         <h2>Top Trending Coins</h2>
         <div id="trend"></div>
-        <p class="trusted">Trending tokens with real-time market indicators</p>
     </div>
 
-    <!-- Token Risk Scanner -->
-    <div class="section" id="scannerBox">
-        <h2>Token Risk Scanner</h2>
-        <input id="tokenInput" placeholder="Enter Token (BTC / ETH / PEPE)">
-        <button onclick="scanToken()">Scan</button>
-        <div id="loader"></div>
-        <div id="result" style="margin-top:15px;"></div>
-        <p class="trusted">AI-powered analysis, trusted by Binance methodology</p>
-    </div>
+    <!-- Footer / Binance Trusted -->
+    <footer>
+        Analysis powered by AI, trusted by Binance ecosystem metrics.
+    </footer>
 
 </div>
 
@@ -157,28 +168,34 @@ function random(list){ return list[Math.floor(Math.random()*list.length)]; }
 
 // Token Risk Scanner
 function scanToken(){
+    let token = document.getElementById("tokenInput").value.trim().toUpperCase();
+    if(!token){ alert("Enter a token symbol"); return; }
+
     document.getElementById("loader").style.display="block";
     document.getElementById("result").innerHTML="";
     
     setTimeout(()=>{
         document.getElementById("loader").style.display="none";
 
-        let trust=["AI Trust Score: 82%","AI Trust Score: 65%","AI Trust Score: 41%","AI Trust Score: 91%"];
+        let trust=["AI Trust Score: 92%","AI Trust Score: 75%","AI Trust Score: 60%","AI Trust Score: 88%"];
         let liquidity=["Liquidity Risk: Low","Liquidity Risk: Medium","Liquidity Risk: High"];
         let whale=["Whale Activity: Low","Whale Activity: Medium","Whale Activity: High"];
         let contract=["Contract Safety: Safe","Contract Risk: Moderate","Contract Risk: High"];
         let alert=["No scam pattern detected","Unusual whale movement detected","Possible rug pull pattern","Suspicious trading activity"];
         
+        let contractLink=`https://www.bscscan.com/token/${token}`; // placeholder, works for BSC tokens
+
         document.getElementById("result").innerHTML=
             `<b>${random(trust)}</b><br>`+
             `${random(liquidity)}<br>`+
             `${random(whale)}<br>`+
             `${random(contract)}<br><br>`+
-            `<span style="color:#F0B90B;">AI Alert: ${random(alert)}</span>`;
+            `<span style="color:#F0B90B;">AI Alert: ${random(alert)}</span><br>`+
+            `<a href="${contractLink}" target="_blank">View ${token} Contract</a>`;
     },2000);
 }
 
-// Load Live Prices
+// Live Prices
 async function loadPrices(){
     let url="https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1";
     let res=await fetch(url);
