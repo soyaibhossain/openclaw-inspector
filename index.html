@@ -5,12 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OpenClaw Inspector</title>
 <style>
-/* Global Styles */
 body {
     margin:0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #F9F6F0; /* Binance-friendly light background */
-    color: #1E1E2F; /* dark text for readability */
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #F9F6F0;
+    color: #1E1E2F;
 }
 header {
     background:#F0B90B;
@@ -30,8 +29,6 @@ h2 {color:#F0B90B;margin-bottom:10px;}
     grid-template-columns: 1fr 1fr;
     gap:20px;
 }
-
-/* Section Cards */
 .section {
     background:#FFFDF5;
     padding:25px;
@@ -39,8 +36,6 @@ h2 {color:#F0B90B;margin-bottom:10px;}
     min-height:200px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-
-/* Scanner Box */
 #scannerBox {
     grid-column: span 2;
     text-align:center;
@@ -63,9 +58,7 @@ button {
     margin-left:10px;
     transition:0.3s;
 }
-button:hover{
-    background:#d6a700;
-}
+button:hover {background:#d6a700;}
 #loader {
     display:none;
     margin:20px auto;
@@ -76,48 +69,24 @@ button:hover{
     height:50px;
     animation:spin 1s linear infinite;
 }
-@keyframes spin {
-    0%{transform:rotate(0deg);}
-    100%{transform:rotate(360deg);}
-}
-
-/* Coins / Market Items */
-.coin, .trend-coin {
-    margin:10px 0;
-    display:flex;
-    justify-content:space-between;
-    font-weight:bold;
-}
+@keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+.coin, .trend-coin {margin:10px 0; display:flex; justify-content:space-between; font-weight:bold;}
 .green {color:#00A86B;}
 .red {color:#FF4D4D;}
 .neutral {color:#1E1E2F;}
-.trusted {
-    margin-top:10px;
-    font-size:13px;
-    color:#555;
-    font-style:italic;
-}
-
-/* Footer */
-footer{
-    grid-column: span 2;
-    text-align:center;
-    margin-top:30px;
-    font-size:14px;
-    color:#1E1E2F;
-}
-
-/* Responsive */
-@media(max-width:900px){
-    .container{grid-template-columns:1fr;}
-}
+.trusted {margin-top:10px; font-size:13px; color:#555; font-style:italic;}
+.account-link {margin-top:15px; font-size:14px;}
+.account-link a {color:#F0B90B; text-decoration:none;}
+.account-link a:hover {text-decoration:underline;}
+footer{grid-column: span 2; text-align:center; margin-top:30px; font-size:14px; color:#1E1E2F;}
+@media(max-width:900px){.container{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
 <header>
 <h1>OpenClaw Inspector</h1>
-<p>Finance-focused AI Crypto Risk Scanner | Trusted by Binance</p>
+<p>AI-powered Crypto Risk Scanner | Trusted by Binance</p>
 </header>
 
 <div class="container">
@@ -134,13 +103,17 @@ footer{
         <div id="trendCap">Loading market overview...</div>
     </div>
 
-    <!-- Token Risk Scanner - Center -->
+    <!-- Token Risk Scanner -->
     <div class="section" id="scannerBox">
         <h2>Token Risk Scanner</h2>
         <input id="tokenInput" placeholder="Enter Token Symbol (BTC / ETH / PEPE)">
         <button onclick="scanToken()">Scan</button>
         <div id="loader"></div>
         <div id="result" style="margin-top:15px;"></div>
+        <div class="account-link">
+            New to Binance? Create a new account here 👉 
+            <a href="https://www.binance.com/register?ref=378417744" target="_blank">https://www.binance.com/register?ref=378417744</a>
+        </div>
     </div>
 
     <!-- Live Prices -->
@@ -183,7 +156,8 @@ function scanToken(){
         let contract=["Contract Safety: Safe","Contract Risk: Moderate","Contract Risk: High"];
         let alert=["No scam pattern detected","Unusual whale movement detected","Possible rug pull pattern","Suspicious trading activity"];
         
-        let contractLink=`https://www.bscscan.com/token/${token}`; // placeholder, works for BSC tokens
+        // Smart contract link (placeholder, dynamic if needed)
+        let contractLink=`https://www.bscscan.com/token/${token}`;
 
         document.getElementById("result").innerHTML=
             `<b>${random(trust)}</b><br>`+
@@ -203,7 +177,7 @@ async function loadPrices(){
     let html="";
     data.forEach(c=>{
         let color=c.price_change_percentage_24h>0?"green":"red";
-        html+=`<div class="coin"><span>${c.name}</span><span class="${color}">$${c.current_price} (${c.price_change_percentage_24h.toFixed(2)}%)</span></div>`;
+        html+=`<div class="coin"><span>${c.name}</span><span class="${color}">$${c.current_price} (${c.price_change_percentage_24h.toFixed(2)}%) | MC: $${(c.market_cap/1e6).toFixed(2)}M</span></div>`;
     });
     document.getElementById("prices").innerHTML=html;
 }
@@ -232,14 +206,14 @@ async function marketOverview(){
     document.getElementById("trendCap").innerHTML=html;
 }
 
-// Trending Coins
+// Trending Coins with Market Cap
 async function marketTrend(){
     let url="https://api.coingecko.com/api/v3/search/trending";
     let res=await fetch(url);
     let data=await res.json();
     let html="";
     data.coins.slice(0,5).forEach(c=>{
-        html+=`<div class="trend-coin">🔥 ${c.item.name} <span class="neutral">Market Cap: $${(c.item.market_cap/1e6).toFixed(1)}M</span></div>`;
+        html+=`<div class="trend-coin">🔥 ${c.item.name} <span class="neutral">MC: $${(c.item.market_cap/1e6).toFixed(2)}M</span></div>`;
     });
     document.getElementById("trend").innerHTML=html;
 }
@@ -255,6 +229,7 @@ setInterval(loadPrices,20000);
 setInterval(marketSentiment,20000);
 setInterval(marketTrend,20000);
 setInterval(marketOverview,20000);
+
 </script>
 
 </body>
