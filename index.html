@@ -75,11 +75,11 @@ button:hover {background:#d6a700;}
 .red {color:#FF4D4D;}
 .neutral {color:#1E1E2F;}
 .trusted {margin-top:10px; font-size:13px; color:#555; font-style:italic;}
-.account-link {margin-top:15px; font-size:14px;}
+.account-link {position:absolute; bottom:20px; left:20px; font-size:14px;}
 .account-link a {color:#F0B90B; text-decoration:none;}
 .account-link a:hover {text-decoration:underline;}
 footer{grid-column: span 2; text-align:center; margin-top:30px; font-size:14px; color:#1E1E2F;}
-@media(max-width:900px){.container{grid-template-columns:1fr;}}
+@media(max-width:900px){.container{grid-template-columns:1fr;}.account-link{position:relative;left:0;bottom:0;}}
 </style>
 </head>
 <body>
@@ -110,10 +110,6 @@ footer{grid-column: span 2; text-align:center; margin-top:30px; font-size:14px; 
         <button onclick="scanToken()">Scan</button>
         <div id="loader"></div>
         <div id="result" style="margin-top:15px;"></div>
-        <div class="account-link">
-            New to Binance? Create a new account here 👉 
-            <a href="https://www.binance.com/register?ref=378417744" target="_blank">https://www.binance.com/register?ref=378417744</a>
-        </div>
     </div>
 
     <!-- Live Prices -->
@@ -132,6 +128,11 @@ footer{grid-column: span 2; text-align:center; margin-top:30px; font-size:14px; 
     <footer>
         Analysis powered by AI, trusted by Binance ecosystem metrics.
     </footer>
+
+    <!-- Binance Account Link Bottom Left -->
+    <div class="account-link">
+        Visit Binance 👉 <a href="https://www.binance.com/register?ref=378417744" target="_blank">Create Account</a>
+    </div>
 
 </div>
 
@@ -156,7 +157,6 @@ function scanToken(){
         let contract=["Contract Safety: Safe","Contract Risk: Moderate","Contract Risk: High"];
         let alert=["No scam pattern detected","Unusual whale movement detected","Possible rug pull pattern","Suspicious trading activity"];
         
-        // Smart contract link (placeholder, dynamic if needed)
         let contractLink=`https://www.bscscan.com/token/${token}`;
 
         document.getElementById("result").innerHTML=
